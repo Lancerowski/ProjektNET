@@ -24,9 +24,9 @@
     <tbody>
 @foreach (var item in Model) {
         <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.User.FirstName)
-            </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.User.FirstName) @Html.DisplayFor(modelItem => item.User.Surname)
+                </td>
             <td>
                 @Html.DisplayFor(modelItem => item.WorkoutClass.Name)
             </td>

@@ -15,9 +15,9 @@ namespace ProjektNET.Models
         public int WorkoutClassId { get; set; }
 
         [ForeignKey("UserId")]
-        public User User { get; set; }
+        public User? User { get; set; }
 
         [ForeignKey("WorkoutClassId")]
-        public WorkoutClass WorkoutClass { get; set; }
+        public WorkoutClass? WorkoutClass { get; set; }
     }
 }

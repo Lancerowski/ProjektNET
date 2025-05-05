@@ -52,7 +52,11 @@ namespace ProjektNET.Controllers
         public IActionResult Create()
         {
             // Populate the dropdown lists for UserId and WorkoutClassId
-            ViewBag.UserId = new SelectList(_context.Users, "Id", "FirstName"); // Assuming "FirstName" is used as a display field for the User model
+            ViewBag.UserId = new SelectList(
+                _context.Users.Select(u => new { Id = u.Id, Name = u.FirstName + " " + u.Surname }).ToList(),
+                "Id",
+                "Name"
+            ); 
             ViewBag.WorkoutClassId = new SelectList(_context.WorkoutClasses, "Id", "Name"); // Assuming "Name" is used as a display field for the WorkoutClass model
 
             return View();

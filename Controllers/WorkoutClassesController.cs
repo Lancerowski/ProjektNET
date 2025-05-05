@@ -34,7 +34,12 @@ namespace ProjektNET.Controllers
             }
 
             var workoutClass = await _context.WorkoutClasses
+                .Include(w => w.UserWorkoutClasses)
+                    .ThenInclude(uwc => uwc.User)
+                .Include(w => w.TrainerWorkoutClasses)
+                    .ThenInclude(twc => twc.Trainer)
                 .FirstOrDefaultAsync(m => m.Id == id);
+
             if (workoutClass == null)
             {
                 return NotFound();
@@ -50,8 +55,6 @@ namespace ProjektNET.Controllers
         }
 
         // POST: WorkoutClasses/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Name,Schedule,Duration")] WorkoutClass workoutClass)
@@ -82,8 +85,6 @@ namespace ProjektNET.Controllers
         }
 
         // POST: WorkoutClasses/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Schedule,Duration")] WorkoutClass workoutClass)
