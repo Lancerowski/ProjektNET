@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ProjektNET.Data;
 using ProjektNET.Models;
@@ -29,16 +26,21 @@ namespace ProjektNET.Controllers
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
-            {
                 return NotFound();
-            }
 
             var trainer = await _context.Trainers
+                .Include(t => t.TrainerWorkoutClasses)
+                    .ThenInclude(twc => twc.WorkoutClass)
+                        .ThenInclude(wc => wc.TrainerWorkoutClasses)
+                            .ThenInclude(twc => twc.Trainer)
+                .Include(t => t.TrainerWorkoutClasses)
+                    .ThenInclude(twc => twc.WorkoutClass)
+                        .ThenInclude(wc => wc.UserWorkoutClasses)
+                            .ThenInclude(uwc => uwc.User)
                 .FirstOrDefaultAsync(m => m.Id == id);
+
             if (trainer == null)
-            {
                 return NotFound();
-            }
 
             return View(trainer);
         }
@@ -50,8 +52,6 @@ namespace ProjektNET.Controllers
         }
 
         // POST: Trainers/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,FirstName,Surname,Age,Phone")] Trainer trainer)
@@ -69,29 +69,22 @@ namespace ProjektNET.Controllers
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
-            {
                 return NotFound();
-            }
 
             var trainer = await _context.Trainers.FindAsync(id);
             if (trainer == null)
-            {
                 return NotFound();
-            }
+
             return View(trainer);
         }
 
         // POST: Trainers/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,FirstName,Surname,Age,Phone")] Trainer trainer)
         {
             if (id != trainer.Id)
-            {
                 return NotFound();
-            }
 
             if (ModelState.IsValid)
             {
@@ -103,13 +96,9 @@ namespace ProjektNET.Controllers
                 catch (DbUpdateConcurrencyException)
                 {
                     if (!TrainerExists(trainer.Id))
-                    {
                         return NotFound();
-                    }
                     else
-                    {
                         throw;
-                    }
                 }
                 return RedirectToAction(nameof(Index));
             }
@@ -120,16 +109,13 @@ namespace ProjektNET.Controllers
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
-            {
                 return NotFound();
-            }
 
             var trainer = await _context.Trainers
                 .FirstOrDefaultAsync(m => m.Id == id);
+
             if (trainer == null)
-            {
                 return NotFound();
-            }
 
             return View(trainer);
         }
@@ -141,9 +127,7 @@ namespace ProjektNET.Controllers
         {
             var trainer = await _context.Trainers.FindAsync(id);
             if (trainer != null)
-            {
                 _context.Trainers.Remove(trainer);
-            }
 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));

@@ -4,33 +4,59 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
+<h1 class="mb-4">User Details</h1>
+
+<div class="card mb-4">
+    <div class="card-body">
+        <h4 class="card-title">User Information</h4>
+        <hr />
+        <dl class="row">
+            <dt class="col-sm-3">First Name:</dt>
+            <dd class="col-sm-9">@Model.FirstName</dd>
+
+            <dt class="col-sm-3">Surname:</dt>
+            <dd class="col-sm-9">@Model.Surname</dd>
+
+            <dt class="col-sm-3">Age:</dt>
+            <dd class="col-sm-9">@Model.Age</dd>
+        </dl>
+    </div>
+</div>
+
+<div class="card mb-4">
+    <div class="card-body">
+        <h4 class="card-title">Attending Workouts</h4>
+        <hr />
+        @if (Model.UserWorkoutClasses != null && Model.UserWorkoutClasses.Any())
+        {
+            <div class="list-group">
+                @foreach (var userWorkout in Model.UserWorkoutClasses)
+                {
+                    <div class="list-group-item">
+                        <h5 class="mb-1">@userWorkout.WorkoutClass.Name</h5>
+                        <p class="mb-1">
+                            <strong>Schedule:</strong> @userWorkout.WorkoutClass.Schedule<br />
+                            <strong>Duration:</strong> @userWorkout.WorkoutClass.Duration minutes
+                        </p>
+                        <p class="mb-0"><strong>Trainers:</strong></p>
+                        <ul class="mb-0">
+                            @foreach (var trainerClass in userWorkout.WorkoutClass.TrainerWorkoutClasses)
+                            {
+                                <li>@trainerClass.Trainer.FirstName @trainerClass.Trainer.Surname</li>
+                            }
+                        </ul>
+                    </div>
+                }
+            </div>
+        }
+        else
+        {
+            <p class="text-muted">This user is not enrolled in any workouts.</p>
+        }
+    </div>
+</div>
 
 <div>
-    <h4>User</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.FirstName)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.FirstName)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Surname)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Surname)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Age)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Age)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Edit" asp-route-id="@Model?.Id" class="btn btn-primary">Edit</a>
+    <a asp-action="Index" class="btn btn-secondary ms-2">Back to List</a>
 </div>

@@ -4,39 +4,81 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
+<h1 class="mb-4">Trainer Details</h1>
+
+<div class="card mb-4">
+    <div class="card-body">
+        <h4 class="card-title">Trainer Information</h4>
+        <hr />
+        <dl class="row">
+            <dt class="col-sm-3">First Name:</dt>
+            <dd class="col-sm-9">@Model.FirstName</dd>
+
+            <dt class="col-sm-3">Surname:</dt>
+            <dd class="col-sm-9">@Model.Surname</dd>
+
+            <dt class="col-sm-3">Age:</dt>
+            <dd class="col-sm-9">@Model.Age</dd>
+
+            <dt class="col-sm-3">Phone:</dt>
+            <dd class="col-sm-9">@Model.Phone</dd>
+        </dl>
+    </div>
+</div>
+
+<div class="card mb-4">
+    <div class="card-body">
+        <h4 class="card-title">Workouts Led</h4>
+        <hr />
+        @if (Model.TrainerWorkoutClasses != null && Model.TrainerWorkoutClasses.Any())
+        {
+            <div class="list-group">
+                @foreach (var trainerWorkout in Model.TrainerWorkoutClasses)
+                {
+                    var workout = trainerWorkout.WorkoutClass;
+                    <div class="list-group-item">
+                        <h5>@workout.Name</h5>
+                        <p class="mb-1">
+                            <strong>Schedule:</strong> @workout.Schedule<br />
+                            <strong>Duration:</strong> @workout.Duration minutes
+                        </p>
+
+                        <p class="mb-0"><strong>Co-Trainers:</strong></p>
+                        <ul class="mb-2">
+                            @foreach (var coTrainer in workout.TrainerWorkoutClasses
+                           .Where(twc => twc.TrainerId != Model.Id))
+                            {
+                                <li>@coTrainer.Trainer.FirstName @coTrainer.Trainer.Surname</li>
+                            }
+                            @if (!workout.TrainerWorkoutClasses.Any(twc => twc.TrainerId != Model.Id))
+                            {
+                                <li class="text-muted">None</li>
+                            }
+                        </ul>
+
+                        <p class="mb-0"><strong>Participants:</strong></p>
+                        <ul class="mb-0">
+                            @foreach (var userClass in workout.UserWorkoutClasses)
+                            {
+                                <li>@userClass.User.FirstName @userClass.User.Surname</li>
+                            }
+                            @if (!workout.UserWorkoutClasses.Any())
+                            {
+                                <li class="text-muted">No users enrolled</li>
+                            }
+                        </ul>
+                    </div>
+                }
+            </div>
+        }
+        else
+        {
+            <p class="text-muted">This trainer is not assigned to any workouts.</p>
+        }
+    </div>
+</div>
 
 <div>
-    <h4>Trainer</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.FirstName)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.FirstName)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Surname)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Surname)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Age)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Age)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Phone)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Phone)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Edit" asp-route-id="@Model?.Id" class="btn btn-primary">Edit</a>
+    <a asp-action="Index" class="btn btn-secondary ms-2">Back to List</a>
 </div>

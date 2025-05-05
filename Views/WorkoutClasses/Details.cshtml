@@ -4,52 +4,66 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
+<h1 class="mb-4">Workout Class Details</h1>
 
-<div>
-    <h4>WorkoutClass</h4>
-    <hr />
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Name)
-        </dd>
+<div class="card mb-4">
+    <div class="card-body">
+        <h4 class="card-title">Class Information</h4>
+        <hr />
+        <dl class="row">
+            <dt class="col-sm-3">Name:</dt>
+            <dd class="col-sm-9">@Model.Name</dd>
 
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Schedule)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Schedule)
-        </dd>
+            <dt class="col-sm-3">Schedule:</dt>
+            <dd class="col-sm-9">@Model.Schedule</dd>
 
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Duration)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Duration)
-        </dd>
-    </dl>
+            <dt class="col-sm-3">Duration:</dt>
+            <dd class="col-sm-9">@Model.Duration minutes</dd>
+        </dl>
+    </div>
 </div>
 
-<h4>Users Attending:</h4>
-<ul>
-    @foreach (var userWorkoutClass in Model.UserWorkoutClasses)
-    {
-        <li>@userWorkoutClass.User.FirstName @userWorkoutClass.User.Surname</li>
-    }
-</ul>
+<div class="card mb-4">
+    <div class="card-body">
+        <h4 class="card-title">Users Attending</h4>
+        <hr />
+        @if (Model.UserWorkoutClasses != null && Model.UserWorkoutClasses.Any())
+        {
+            <ul class="mb-0">
+                @foreach (var userClass in Model.UserWorkoutClasses)
+                {
+                    <li>@userClass.User.FirstName @userClass.User.Surname</li>
+                }
+            </ul>
+        }
+        else
+        {
+            <p class="text-muted">No users are attending this class.</p>
+        }
+    </div>
+</div>
 
-<h4>Trainers Leading:</h4>
-<ul>
-    @foreach (var trainerWorkoutClass in Model.TrainerWorkoutClasses)
-    {
-        <li>@trainerWorkoutClass.Trainer.FirstName @trainerWorkoutClass.Trainer.Surname</li>
-    }
-</ul>
+<div class="card mb-4">
+    <div class="card-body">
+        <h4 class="card-title">Trainers Leading</h4>
+        <hr />
+        @if (Model.TrainerWorkoutClasses != null && Model.TrainerWorkoutClasses.Any())
+        {
+            <ul class="mb-0">
+                @foreach (var trainerClass in Model.TrainerWorkoutClasses)
+                {
+                    <li>@trainerClass.Trainer.FirstName @trainerClass.Trainer.Surname</li>
+                }
+            </ul>
+        }
+        else
+        {
+            <p class="text-muted">No trainers are assigned to this class.</p>
+        }
+    </div>
+</div>
 
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Edit" asp-route-id="@Model?.Id" class="btn btn-primary">Edit</a>
+    <a asp-action="Index" class="btn btn-secondary ms-2">Back to List</a>
 </div>
