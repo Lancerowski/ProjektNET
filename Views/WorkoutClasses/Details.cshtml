@@ -30,6 +30,23 @@
         </dd>
     </dl>
 </div>
+
+<h4>Users Attending:</h4>
+<ul>
+    @foreach (var userWorkoutClass in Model.UserWorkoutClasses)
+    {
+        <li>@userWorkoutClass.User.FirstName @userWorkoutClass.User.Surname</li>
+    }
+</ul>
+
+<h4>Trainers Leading:</h4>
+<ul>
+    @foreach (var trainerWorkoutClass in Model.TrainerWorkoutClasses)
+    {
+        <li>@trainerWorkoutClass.Trainer.FirstName @trainerWorkoutClass.Trainer.Surname</li>
+    }
+</ul>
+
 <div>
     <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
     <a asp-action="Index">Back to List</a>
