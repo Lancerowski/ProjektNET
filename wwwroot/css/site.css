@@ -7,7 +7,9 @@
         font-size: 16px;
     }
 }
-
+* {
+    text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.4);
+}
 .btn:focus,
 .btn:active:focus,
 .btn-link.nav-link:focus,
@@ -23,7 +25,7 @@ html {
 
 body {
     margin-bottom: 60px;
-    background: linear-gradient(60deg, #03045E, #0077B6, #00B4D8, #48CAE4, #90E0EF, #00B4D8, #0077B6, #03045E);
+    background: linear-gradient(60deg, #002b87, #0077B6, #00B4D8, #48CAE4, #90E0EF, #00B4D8, #0077B6, #002b87);
     background-size: 400% 400%;
     animation: Background 20s ease infinite;
 }
